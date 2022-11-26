@@ -5,7 +5,7 @@ const Button = ({ onClick, buttonName }) => (
 );
 
 const Statistics = ({ good, neutral, bad }) => {
-  return (
+  return good + neutral + bad > 0 ? (
     <div>
       <h2>Statistics</h2>
       <p>Good {good}</p>
@@ -15,6 +15,8 @@ const Statistics = ({ good, neutral, bad }) => {
       <p>Average {(good - bad) / (good + neutral + bad)}</p>
       <p>Positive {(good / (good + neutral + bad)) * 100} %</p>
     </div>
+  ) : (
+    <p>No feedback given</p>
   );
 };
 
