@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+const Button = ({ onClick, buttonText }) => (
+  <button onClick={onClick}> {buttonText}</button>
+);
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -19,9 +23,10 @@ const App = () => {
     <div>
       {anecdotes[selected]}
       <br />
-      <br />
-      <br />
-      <button onClick={rndm}>Click to view a random anecdote</button>
+      <Button
+        onClick={rndm(anecdotes)}
+        buttonText="Click to view a random anecdote"
+      />
     </div>
   );
 };
