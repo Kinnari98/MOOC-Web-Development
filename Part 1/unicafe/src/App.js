@@ -4,16 +4,26 @@ const Button = ({ onClick, buttonName }) => (
   <button onClick={onClick}> {buttonName}</button>
 );
 
+const StatisticLine = ({ name, value }) => (
+  <p>
+    {name} {value}
+  </p>
+);
+
 const Statistics = ({ good, neutral, bad }) => {
+  const avg = (good - bad) / (good + neutral + bad);
+  const total = good + neutral + bad;
+  const pos = "${(good / total) * 100} %";
+
   return good + neutral + bad > 0 ? (
     <div>
       <h2>Statistics</h2>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>Total {good + neutral + bad}</p>
-      <p>Average {(good - bad) / (good + neutral + bad)}</p>
-      <p>Positive {(good / (good + neutral + bad)) * 100} %</p>
+      <StatisticLine name="Good" value={good} />
+      <StatisticLine name="Neutral" value={neutral} />
+      <StatisticLine name="Bad" value={bad} />
+      <StatisticLine name="Total" value={total} />
+      <StatisticLine name="Average" value={avg} />
+      <StatisticLine name="Positive" value={pos} />
     </div>
   ) : (
     <p>No feedback given</p>
