@@ -1,8 +1,11 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-1231244" },
+  ]);
   const [newName, setNewName] = useState("");
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -14,6 +17,7 @@ const App = () => {
     } else {
       const newPerson = {
         name: newName,
+        number: newPhoneNumber,
       };
       // Lisää uuden henkilön persons tilaan, jos nimeä ei ole luettelossa
       setPersons(persons.concat(newPerson));
@@ -25,6 +29,11 @@ const App = () => {
     setNewName(event.target.value);
   };
 
+  // Kopioidaan handleNameChange -> handlePhonNumberChange
+  const handlePhoneNumberChange = (event) => {
+    setNewPhoneNumber(event.target.value);
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -33,12 +42,18 @@ const App = () => {
           name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
+          number:{" "}
+          <input value={newPhoneNumber} onChange={handlePhoneNumberChange} />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       {persons.map((person) => (
-        <p key={person.name}>{person.name}</p>
+        <p key={person.name}>
+          {person.name} {person.number}
+        </p>
       ))}{" "}
     </div>
   );
