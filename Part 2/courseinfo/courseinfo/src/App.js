@@ -46,7 +46,6 @@ const App = () => {
     },
   ];
 
-  // Muokattu palautus mappaukseksi
   return (
     <div>
       {courses.map((course) => (
