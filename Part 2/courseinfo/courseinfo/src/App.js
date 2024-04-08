@@ -25,7 +25,7 @@ const Total = (props) => (
     {props.parts.reduce((total, part) => part.exercises + total, 0)}
   </p>
 );
-
+// Lisätty ID
 const App = () => {
   const course = {
     name: "Half Stack application development",
