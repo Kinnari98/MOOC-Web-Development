@@ -1,8 +1,12 @@
 import { useState } from "react";
 
+// Kovakoodattu valmisdata
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-1231244" },
+    { name: "Kalle Kinnari", number: "040-1255454" },
+    { name: "Kaisa Salomaa", number: "040-7457533" },
+    { name: "Valtteri Kemiläinen", number: "040-123241" },
   ]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
