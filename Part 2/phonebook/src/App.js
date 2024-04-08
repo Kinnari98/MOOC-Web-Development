@@ -10,11 +10,12 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [filter, setFilter] = useState("");
 
   const addPerson = (event) => {
     event.preventDefault();
-    //Tarkistetaan olemassa oleva henkilö, toteutetaan tämä if-lauseella
 
+    //Tarkistetaan olemassa oleva henkilö, toteutetaan tämä if-lauseella
     const doesNameExist = persons.some((person) => person.name === newName);
     if (doesNameExist) {
       alert(`${newName} is already added to phonebook`);
@@ -38,27 +39,44 @@ const App = () => {
     setNewPhoneNumber(event.target.value);
   };
 
+  const handleFiltering = (event) => {
+    setFilter(event.target.value);
+  };
+  // Toteutetaan filteröinti for-loopilla
+  let filteredPersons = [];
+  for (let person of persons) {
+    if (person.name.toLowerCase().includes(filter.toLowerCase())) {
+      filteredPersons.push(person);
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+          Name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
-          number:{" "}
+          Number:{" "}
           <input value={newPhoneNumber} onChange={handlePhoneNumberChange} />
         </div>
         <div>
-          <button type="submit">add</button>
+          <button type="submit">Add contact</button>
+        </div>
+        <h2>Filter contacts</h2>
+        <div>
+          Filter search: <input value={filter} onChange={handleFiltering} />
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}
-        </p>
-      ))}{" "}
+      <div>
+        {filteredPersons.map((person) => (
+          <p key={person.name}>
+            {person.name} {person.number}
+          </p>
+        ))}
+      </div>
     </div>
   );
 };
