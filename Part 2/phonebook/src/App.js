@@ -1,59 +1,44 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import personService from "./services/persons.js";
 
-// Kovakoodattu valmisdata
-const App = () => {
+function App() {
   const [persons, setPersons] = useState([]);
-
-  // Haetaan alkutila
-  useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((Response) => {
-      setPersons(Response.data);
-    });
-  });
-
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [filter, setFilter] = useState("");
 
+  useEffect(() => {
+    personService.getAll().then((originalPersons) => {
+      setPersons(originalPersons);
+    });
+  }, []);
+
   const addPerson = (event) => {
     event.preventDefault();
-
-    const newPerson = {
+    const personObject = {
       name: newName,
       number: newPhoneNumber,
     };
 
-    //Tarkistetaan olemassa oleva henkilö, toteutetaan tämä if-lauseella
     const doesNameExist = persons.some((person) => person.name === newName);
     if (doesNameExist) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      axios
-        .post("http://localhost:3001/persons", newPerson)
-        .then((Response) => {
-          setPersons(persons.concat(Response.data));
-        })
-        .catch((error) => {
-          alert("Error! Couldn't add person to phonebook");
-        });
+      personService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewPhoneNumber("");
+      });
     }
   };
 
-  // Päivittää newName tilan käyttäjän antaman syötteen mukaan
-  const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
+  const handleNameChange = (event) => setNewName(event.target.value);
 
-  // Kopioidaan handleNameChange -> handlePhonNumberChange
-  const handlePhoneNumberChange = (event) => {
+  const handlePhoneNumberChange = (event) =>
     setNewPhoneNumber(event.target.value);
-  };
 
-  const handleFiltering = (event) => {
-    setFilter(event.target.value);
-  };
-  // Toteutetaan filteröinti for-loopilla
+  const handleFiltering = (event) => setFilter(event.target.value);
+
   let filteredPersons = [];
   for (let person of persons) {
     if (person.name.toLowerCase().includes(filter.toLowerCase())) {
@@ -75,11 +60,11 @@ const App = () => {
         <div>
           <button type="submit">Add contact</button>
         </div>
-        <h2>Filter contacts</h2>
-        <div>
-          Filter search: <input value={filter} onChange={handleFiltering} />
-        </div>
       </form>
+      <h2>Filter contacts</h2>
+      <div>
+        Filter search: <input value={filter} onChange={handleFiltering} />
+      </div>
       <h2>Numbers</h2>
       <div>
         {filteredPersons.map((person) => (
@@ -90,8 +75,6 @@ const App = () => {
       </div>
     </div>
   );
-};
-
-// Filtteröinti -toiminta säilytetty datan printtaamisessa
+}
 
 export default App;
