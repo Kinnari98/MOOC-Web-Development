@@ -19,6 +19,11 @@ const update = async (id, newObject) => {
   return Response.data;
 };
 
+const remove = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`);
+  return response.data;
+};
+
 // Määritetty objekti virheilmoitusten pois saamiseksi
-const personService = { getAll, create, update };
+const personService = { getAll, create, update, remove };
 export default personService;

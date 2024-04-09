@@ -32,6 +32,17 @@ function App() {
     }
   };
 
+  const handleRemove = (id) => {
+    const person = persons.find((p) => p.id === id);
+    const confirmRemove = window.confirm(`Delete ${person.name}?`);
+
+    if (confirmRemove) {
+      personService.remove(id).then(() => {
+        setPersons(persons.filter((p) => p.id !== id));
+      });
+    }
+  };
+
   const handleNameChange = (event) => setNewName(event.target.value);
 
   const handlePhoneNumberChange = (event) =>
@@ -70,6 +81,12 @@ function App() {
         {filteredPersons.map((person) => (
           <p key={person.id}>
             {person.name} {person.number}
+            <button
+              onClick={() => handleRemove(person.id)}
+              style={{ marginLeft: "10px" }}
+            >
+              Remove
+            </button>
           </p>
         ))}
       </div>
