@@ -19,17 +19,24 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
+    const newPerson = {
+      name: newName,
+      number: newPhoneNumber,
+    };
+
     //Tarkistetaan olemassa oleva henkilö, toteutetaan tämä if-lauseella
     const doesNameExist = persons.some((person) => person.name === newName);
     if (doesNameExist) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      const newPerson = {
-        name: newName,
-        number: newPhoneNumber,
-      };
-      // Lisää uuden henkilön persons tilaan, jos nimeä ei ole luettelossa
-      setPersons(persons.concat(newPerson));
+      axios
+        .post("http://localhost:3001/persons", newPerson)
+        .then((Response) => {
+          setPersons(persons.concat(Response.data));
+        })
+        .catch((error) => {
+          alert("Error! Couldn't add person to phonebook");
+        });
     }
   };
 
@@ -74,13 +81,13 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul>
+      <div>
         {filteredPersons.map((person) => (
-          <li key={person.id}>
+          <p key={person.id}>
             {person.name} {person.number}
-          </li>
+          </p>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
