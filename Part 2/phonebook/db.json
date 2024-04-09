@@ -1,0 +1,8 @@
+{
+  "persons": [
+    { "name": "Arto Hellas", "number": "040-1231244", "id": 1 },
+    { "name": "Kalle Kinnari", "number": "040-1255454", "id": 2 },
+    { "name": "Kaisa Salomaa", "number": "040-7457533", "id": 3 },
+    { "name": "Valtteri Kemiläinen", "number": "040-123241", "id": 4 }
+  ]
+}

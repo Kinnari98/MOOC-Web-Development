@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 // Kovakoodattu valmisdata
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-1231244" },
-    { name: "Kalle Kinnari", number: "040-1255454" },
-    { name: "Kaisa Salomaa", number: "040-7457533" },
-    { name: "Valtteri Kemiläinen", number: "040-123241" },
-  ]);
+  const [persons, setPersons] = useState([]);
+
+  // Haetaan alkutila
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then((Response) => {
+      setPersons(Response.data);
+    });
+  });
+
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [filter, setFilter] = useState("");
@@ -70,15 +74,17 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <div>
+      <ul>
         {filteredPersons.map((person) => (
-          <p key={person.name}>
+          <li key={person.id}>
             {person.name} {person.number}
-          </p>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
+
+// Filtteröinti -toiminta säilytetty datan printtaamisessa
 
 export default App;
