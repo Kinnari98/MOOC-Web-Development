@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import personService from "./services/persons.js";
+import SendNotification from "./ilmot.js";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState("");
 
   useEffect(() => {
     personService.getAll().then((originalPersons) => {
@@ -28,6 +31,9 @@ function App() {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewPhoneNumber("");
+        setMessage(`${newName} was added successfully!`);
+        setMessageType("success");
+        setTimeout(() => setMessage(null), 5000);
       });
     }
   };
@@ -39,6 +45,9 @@ function App() {
     if (confirmRemove) {
       personService.remove(id).then(() => {
         setPersons(persons.filter((p) => p.id !== id));
+        setMessage(`${person.name} was removed!`);
+        setMessageType("succes");
+        setTimeout(() => setMessage(null), 5000);
       });
     }
   };
@@ -61,6 +70,7 @@ function App() {
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
+        <SendNotification message={message} type={messageType} />
         <div>
           Name: <input value={newName} onChange={handleNameChange} />
         </div>
