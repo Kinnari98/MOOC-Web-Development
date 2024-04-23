@@ -1,0 +1,6 @@
+DELETE http://localhost:3001/api/persons/3
+
+###
+// Varmistetaan, että käyttäjä posituu
+GET http://localhost:3001/api/persons
+
