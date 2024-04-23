@@ -18,7 +18,7 @@ app.listen(PORT, () => {});
 app.get("/info", (req, res) => {
   const date = new Date();
   res.send(`
-        <p>Puhelinluetelossa on ${persons.length} henkilön tiedot</p>
+        <p>Phonebook has info for ${persons.length} peple</p>
         <p>${date}</p>
     `);
 });
