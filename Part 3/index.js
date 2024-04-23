@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 
 // MUISTILISTA KALLELLE
 // MUISTA KOMMENTOIDA AINA UUDET SETIT!!!
 
 app.use(express.json());
+app.use(morgan("tiny"));
 // Kovakoodattu data
 let persons = [
   { id: 1, name: "Arto Hellas", number: "040-123456" },
