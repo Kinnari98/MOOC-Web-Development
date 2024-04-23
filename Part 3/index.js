@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
 
+// MUISTILISTA KALLELLE
+// MUISTA KOMMENTOIDA AINA UUDET SETIT!!!
+
+app.use(express.json());
 // Kovakoodattu data
 let persons = [
   { id: 1, name: "Arto Hellas", number: "040-123456" },
@@ -39,6 +43,29 @@ app.get("/api/persons/:id", (req, res) => {
 // Hakee henkilöt
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+// FUnktio joka lisää henkilön
+function AddPerson() {
+  const ID = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
+  return Math.floor(Math.random() * 100) + ID + 1;
+}
+
+// Lisää yhteystiedot taulukkoon
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
+  if (!body.name || !body.number) {
+    return res.status(400).json({ error: "Missing something?" });
+  }
+
+  const person = {
+    id: AddPerson(),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons.push(person);
+  res.json(person);
 });
 
 const PORT = 3001;

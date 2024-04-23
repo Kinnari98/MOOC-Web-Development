@@ -4,3 +4,13 @@ DELETE http://localhost:3001/api/persons/3
 // Varmistetaan, että käyttäjä posituu
 GET http://localhost:3001/api/persons
 
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Yesssirrrr",
+    "number": "6346365346"
+}
+
+
