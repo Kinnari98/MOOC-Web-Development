@@ -6,8 +6,10 @@ const morgan = require("morgan");
 // MUISTA KOMMENTOIDA AINA UUDET SETIT!!!
 
 app.use(express.json());
+// app.use(morgan('dev'));
 app.use(morgan("tiny"));
 // Kovakoodattu data
+
 let persons = [
   { id: 1, name: "Arto Hellas", number: "040-123456" },
   { id: 2, name: "Ada Lovelace", number: "39-44-5323523" },
@@ -72,6 +74,11 @@ app.post("/api/persons", (req, res) => {
   persons.push(person);
   res.json(person);
 });
+
+// Katsotaan tätä myöhemmin uudestaan, ei toimi atm
+/*morgan.token("sendData", function (req) {
+  return JSON.stringify(req.body);
+}); */
 
 const PORT = 3001;
 app.listen(PORT, () => {});
