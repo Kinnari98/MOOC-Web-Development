@@ -27,7 +27,7 @@ app.delete("/api/persons/:id", (request, response) => {
   if (persons.length < initialLength) {
     response.status(204).end();
   } else {
-    response.status(404).send({ error: "Resource not found" });
+    response.status(404).send({ error: "Not found" });
   }
 });
 
@@ -52,7 +52,7 @@ app.get("/api/persons", (request, response) => {
 // FUnktio joka lisää henkilön
 function AddPerson() {
   const ID = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
-  return Math.floor(Math.random() * 100) + ID + 1;
+  return Math.floor(Math.random() * 10) + ID + 1;
 }
 
 // Lisää yhteystiedot taulukkoon
@@ -72,7 +72,7 @@ app.post("/api/persons", (request, response) => {
   };
 
   persons.push(person);
-  res.json(person);
+  response.json(person);
 });
 
 // Katsotaan tätä myöhemmin uudestaan, ei toimi atm
