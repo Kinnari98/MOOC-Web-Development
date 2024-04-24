@@ -19,34 +19,34 @@ let persons = [
 
 // Poistaa ID:n perusteella yhteystiedot. HTTP-komento toisessa tiedostossa.
 // Tämä tehtiin Visual Studion REST Clientillä
-app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
   const initialLength = persons.length;
   persons = persons.filter((person) => person.id !== id);
 
   if (persons.length < initialLength) {
-    res.status(204).end();
+    response.status(204).end();
   } else {
-    res.status(404).send({ error: "Resource not found" });
+    response.status(404).send({ error: "Resource not found" });
   }
 });
 
 // Hakee ID:n perusteella henkilön
-app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
   const person = persons.find((p) => p.id === id);
 
   if (person) {
-    res.json(person);
+    response.json(person);
   } else {
-    res
+    response
       .status(404)
       .send({ error: "Sorry! Couldnt find anything corresponding" });
   }
 });
 // Hakee henkilöt
-app.get("/api/persons", (req, res) => {
-  res.json(persons);
+app.get("/api/persons", (request, response) => {
+  response.json(persons);
 });
 
 // FUnktio joka lisää henkilön
@@ -56,13 +56,13 @@ function AddPerson() {
 }
 
 // Lisää yhteystiedot taulukkoon
-app.post("/api/persons", (req, res) => {
-  const body = req.body;
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
   if (!body.name || !body.number) {
-    return res.status(400).json({ error: "Missing something?" });
+    return response.status(400).json({ error: "Missing something?" });
   }
   if (persons.some((p) => p.name === body.name)) {
-    return res.status(400).json({ error: "name must be unique" });
+    return response.status(400).json({ error: "name must be unique" });
   }
 
   const person = {
@@ -84,9 +84,9 @@ const PORT = 3001;
 app.listen(PORT, () => {});
 
 // Hakee puhelinluettelon teidot
-app.get("/info", (req, res) => {
+app.get("/info", (request, response) => {
   const date = new Date();
-  res.send(`
+  response.send(`
         <p>Phonebook has info for ${persons.length} peple</p>
         <p>${date}</p>
     `);
