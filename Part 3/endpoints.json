@@ -1,0 +1,24 @@
+{
+  "get": {
+    "1": {
+      "endpoint": "/api/persons/:id"
+    },
+    "2": {
+      "endpoint": "/api/persons"
+    },
+    "3": {
+      "endpoint": "/info"
+    }
+  },
+  "post": {
+    "1": {
+      "endpoint": "/api/persons"
+    }
+  },
+  "put": {},
+  "delete": {
+    "1": {
+      "endpoint": "/api/persons/:id"
+    }
+  }
+}
