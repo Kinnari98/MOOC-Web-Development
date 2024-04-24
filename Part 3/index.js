@@ -8,8 +8,8 @@ const morgan = require("morgan");
 app.use(express.json());
 // app.use(morgan('dev'));
 app.use(morgan("tiny"));
-// Kovakoodattu data
 
+// Kovakoodattu data
 let persons = [
   { id: 1, name: "Arto Hellas", number: "040-123456" },
   { id: 2, name: "Ada Lovelace", number: "39-44-5323523" },
