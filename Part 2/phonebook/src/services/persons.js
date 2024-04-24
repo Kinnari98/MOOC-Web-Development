@@ -1,6 +1,6 @@
 import axios from "axios";
-const localhost = "http://localhost:3001";
-const baseUrl = `${localhost}/api/persons`;
+const host = "https://mooc-web-development.vercel.app";
+const baseUrl = `${host}/api/persons`;
 
 const getAll = async () => {
   const request = axios.get(baseUrl);
@@ -15,7 +15,7 @@ const getOne = async (id) => {
 };
 
 const getInfo = async () => {
-  const request = axios.get(`${localhost}/info`);
+  const request = axios.get(`${host}/info`);
   const Response = await request;
   return Response.data;
 };
