@@ -34,11 +34,11 @@ app.delete("/api/persons/:id", (request, response, next) => {
 });
 
 // Hakee ID:n perusteella henkilön
-app.get("/api/persons/:id", (req, res, next) => {
-  const id = req.params.id;
+app.get("/api/persons/:id", (request, response, next) => {
+  const id = request.params.id;
   Person.findById(id)
     .then((contact) => {
-      res.json(contact);
+      response.json(contact);
     })
     .catch(next);
 });
@@ -61,7 +61,7 @@ app.post("/api/persons", async (request, response) => {
   const existingContact = await Person.findOne({ name: name });
 
   if (existingContact) {
-    return res.status(409).json({
+    return response.status(409).json({
       error: `Can't do that ${name}, already exist`,
     });
   }
@@ -79,6 +79,20 @@ app.post("/api/persons", async (request, response) => {
 /*morgan.token("sendData", function (req) {
   return JSON.stringify(req.body);
 }); */
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "ID not found" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).send({ error: error.message });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = 3001;
 app.listen(PORT, () => {});
