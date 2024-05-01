@@ -51,7 +51,7 @@ app.get("/api/persons", (request, response) => {
 });
 
 // Lisää yhteystiedot taulukkoon
-app.post("/api/persons", async (request, response) => {
+app.post("/api/persons", async (request, response, next) => {
   const { name, number } = request.body;
   console.log(number);
   if (!name || !number) {
@@ -66,13 +66,21 @@ app.post("/api/persons", async (request, response) => {
     });
   }
 
-  await Person.create({ name: name, number: number })
+  try {
+    const contact = await Person.create({ name: name, number: number });
+    response.json(contact);
+  } catch (error) {
+    next(error);
+  }
+
+  /*await Person.create({ name: name, number: number })
     .then((contact) => {
       response.json(contact);
     })
     .catch((error) => {
       next(error);
     });
+    */
 });
 
 // Katsotaan tätä myöhemmin uudestaan, ei toimi atm

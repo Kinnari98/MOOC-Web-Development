@@ -27,14 +27,22 @@ function App() {
     if (doesNameExist) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      personService.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewPhoneNumber("");
-        setMessage(`${newName} was added successfully!`);
-        setMessageType("success");
-        setTimeout(() => setMessage(null), 5000);
-      });
+      personService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          setNewPhoneNumber("");
+          setMessage(`${newName} was added successfully!`);
+          setMessageType("success");
+          setTimeout(() => setMessage(null), 5000);
+        })
+        .catch((error) => {
+          // console.log(error.response.data);
+          setMessage("Error! Name is too short");
+          setMessageType(error);
+          setTimeout(() => setMessage(null), 5000);
+        });
     }
   };
 
