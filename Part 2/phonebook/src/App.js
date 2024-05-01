@@ -39,7 +39,10 @@ function App() {
   };
 
   const handleRemove = (id) => {
-    const person = persons.find((p) => p.id === id);
+    console.log(persons);
+    console.log(id);
+    const person = persons.find((p) => p._id === id);
+    console.log(person);
     const confirmRemove = window.confirm(`Delete ${person.name}?`);
 
     if (confirmRemove) {
@@ -50,6 +53,7 @@ function App() {
         setTimeout(() => setMessage(null), 5000);
       });
     }
+    window.location.reload();
   };
 
   const handleNameChange = (event) => setNewName(event.target.value);
@@ -88,17 +92,19 @@ function App() {
       </div>
       <h2>Numbers</h2>
       <div>
-        {filteredPersons.map((person) => (
-          <p key={person.id}>
-            {person.name} {person.number}
-            <button
-              onClick={() => handleRemove(person.id)}
-              style={{ marginLeft: "10px" }}
-            >
-              Remove
-            </button>
-          </p>
-        ))}
+        {filteredPersons.map((person) => {
+          return (
+            <p key={person._id}>
+              {person.name} {person.number}
+              <button
+                onClick={() => handleRemove(person._id)}
+                style={{ marginLeft: "10px" }}
+              >
+                Remove
+              </button>
+            </p>
+          );
+        })}
       </div>
     </div>
   );

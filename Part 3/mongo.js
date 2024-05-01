@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const password = process.argv[2];
+require("dotenv").config();
 
-const url = `mongodb+srv://kinnarikalle:${password}@project1.dofbubw.mongodb.net/?retryWrites=true&w=majority&appName=project1`;
-
+const url = `mongodb+srv://kinnarikalle:${password}@part-3.tck4oi1.mongodb.net/?retryWrites=true&w=majority&appName=part-3`;
 mongoose.connect(url);
 
 const personSchema = new mongoose.Schema({

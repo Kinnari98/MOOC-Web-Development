@@ -1,5 +1,6 @@
 import axios from "axios";
-const host = "https://mooc-web-development.vercel.app";
+// const host = "https://mooc-web-development.vercel.app";
+const host = "http://localhost:3001";
 const baseUrl = `${host}/api/persons`;
 
 const getAll = async () => {
@@ -33,6 +34,7 @@ const update = async (id, newObject) => {
 };
 
 const remove = async (id) => {
+  console.log(id);
   const response = await axios.delete(`${baseUrl}/${id}`);
   return response.data;
 };
