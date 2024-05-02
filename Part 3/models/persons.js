@@ -1,6 +1,6 @@
 // ./models/persons.js
 const mongoose = require("mongoose");
-require("dotenv").config();
+require("dotenv").config({ path: ".env.local" });
 const url = process.env.MONGO_DB;
 
 mongoose.set("strictQuery", false);

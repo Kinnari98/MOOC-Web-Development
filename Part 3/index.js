@@ -4,7 +4,7 @@ const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/persons");
-require("dotenv").config();
+require("dotenv").config({ path: ".env.local" });
 
 // MUISTILISTA KALLELLE
 // MUISTA KOMMENTOIDA AINA UUDET SETIT!!!
