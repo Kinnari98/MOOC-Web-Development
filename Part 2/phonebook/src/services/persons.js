@@ -1,6 +1,6 @@
 import axios from "axios";
-//const host = "https://mooc-web-development.vercel.app";
-const host = "http://localhost:3001";
+const host = "https://mooc-web-development.vercel.app";
+//const host = "http://localhost:3001";
 const baseUrl = `${host}/api/persons`;
 
 const getAll = async () => {
