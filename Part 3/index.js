@@ -109,7 +109,7 @@ app.listen(PORT, () => {});
 app.get("/info", (request, response) => {
   const date = new Date();
   response.send(`
-        <p>Phonebook has info for ${persons.length} peple</p>
+        <p>Phonebook has info for ${Person.length} peple</p>
         <p>${date}</p>
     `);
 });
