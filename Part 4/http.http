@@ -1,0 +1,24 @@
+### Lisää uusi blogi ###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "TEST HTTP",
+  "author": "Testi oee",
+  "url": "https://jauuu.com",
+  "likes": 2000
+}
+
+###
+
+### Näytä tietokannan sisältö ###
+GET http://localhost:3003/api/blogs
+
+###
+
+### Poista blogi ###
+DELETE http://localhost:3003/api/blogs/663cf89994c2456c9345f153
+
+
+
+###
