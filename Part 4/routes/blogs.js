@@ -1,7 +1,7 @@
 // Blogireitit
 
 const express = require("express");
-const Blog = require("../db.js");
+const { Blog } = require("../db.js");
 
 const blogsRouter = express.Router();
 

@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const blogsRouter = require("./routes/blogs");
+const userRouter = require("./routes/users");
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/blogs", blogsRouter);
 app.use("/api/blogs/id", blogsRouter);
+app.use(userRouter);
 
 console.log("Hello from app");
 

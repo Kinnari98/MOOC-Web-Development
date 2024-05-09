@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:3003
+
+### Create User
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "username": "uusiKayttaja",
+  "password": "salainen",
+  "name": "Matti Meikäläinen"
+}
+
+### Get All Users
+GET {{baseUrl}}/api/users
