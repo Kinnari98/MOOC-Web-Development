@@ -4,11 +4,15 @@ const userRouter = express.Router();
 
 userRouter.post("/api/users", async (request, response) => {
   try {
-    const { username, password, name } = req.body;
+    const { username, password, name } = request.body;
+    console.log("username", username);
+    console.log("password", password);
+    console.log("name", name);
     const user = await User.createUser(username, password, name);
+    console.log("user", user);
     response.status(201).json(user);
   } catch (error) {
-    response.status(400).json({ error: "unable to create user" });
+    response.status(400).json({ message: "unable to create user" });
   }
 });
 

@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 require("dotenv").config();
+const bcrypt = require("bcryptjs");
 
 const mongoUrl = process.env.MONGO_DB;
 
