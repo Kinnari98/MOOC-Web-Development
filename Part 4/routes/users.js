@@ -1,5 +1,5 @@
 const express = require("express");
-const { User } = require("../db.js"); // Käytetään aiemmin luotua User-mallia
+const { User } = require("../db.js");
 const userRouter = express.Router();
 
 userRouter.post("/api/users", async (request, response) => {
@@ -18,8 +18,14 @@ userRouter.post("/api/users", async (request, response) => {
 
 userRouter.get("/api/users", async (request, response) => {
   try {
-    const users = await User.find({});
-    response.json(users.map((u) => ({ username: u.username, name: u.name }))); // Palautetaan vain turvalliset tiedot
+    const users = await User.find({}).populate("blogs", "title url");
+    response.json(
+      users.map((u) => ({
+        username: u.username,
+        name: u.name,
+        blogs: u.blogs,
+      }))
+    );
   } catch (error) {
     response.status(500).json({ error: "unable to retrieve users" });
   }

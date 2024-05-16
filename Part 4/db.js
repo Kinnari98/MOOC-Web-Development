@@ -6,13 +6,6 @@ const bcrypt = require("bcryptjs");
 
 const mongoUrl = process.env.MONGO_DB;
 
-/*const MONGODB_URI =
-  process.env.NODE_ENV === "test"
-    ? process.env.TEST_MONGODB_URI
-    : process.env.MONGODB_URI;
-
-    */
-
 mongoose
   .connect(mongoUrl, {})
   .then(() => {
@@ -27,14 +20,21 @@ const blogSchema = mongoose.Schema({
   author: String,
   url: String,
   likes: Number,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
-// Muokataan
 blogSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
+    if (returnedObject._user) {
+      delete returnedStack.user._id;
+      delete returnedStack.user.__v;
+    }
   },
 });
 
@@ -42,13 +42,27 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
   name: { type: String, required: true },
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog",
+    },
+  ],
 });
 
 userSchema.statics.createUser = async function (username, password, name) {
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
-  const user = new this({ username, passwordHash, name });
+  const user = new this({
+    username,
+    passwordHash,
+    name,
+  });
   return user.save();
+};
+
+userSchema.methods.validatePassword = function (password) {
+  return bcrypt.compare(password, this.passwordHash);
 };
 
 const User = mongoose.model("User", userSchema);

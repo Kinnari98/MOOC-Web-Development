@@ -1,9 +1,10 @@
 ### Lisää uusi blogi ###
 POST http://localhost:3003/api/blogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpIiwiaWQiOiI2NjQ2MmUwYmM5NGJmZmQ4MDViMzNmNjAiLCJpYXQiOjE3MTU4NzUzNTQsImV4cCI6MTcxNTg3ODk1NH0.lFr8KdbeRGcj8ahyk1lfDPcKxIzpeqYtRMkCUos-jeo
 Content-Type: application/json
 
 {
-  "title": "TEST HTTP",
+  "title": "blaaoeeeI",
   "author": "Testi oee",
   "url": "https://jauuu.com",
   "likes": 2000

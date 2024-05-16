@@ -5,9 +5,9 @@ POST {{baseUrl}}/api/users
 Content-Type: application/json
 
 {
-  "username": "uusiKa",
-  "password": "salainen",
-  "name": "Matti Meikäläinen"
+  "username": "testi",
+  "password": "testi",
+  "name": "testi käyttäjä"
 }
 
 ### Get All Users
