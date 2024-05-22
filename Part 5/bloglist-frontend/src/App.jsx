@@ -5,8 +5,7 @@ import Blog from "../src/components/Blog";
 import BlogForm from "../src/components/BlogForm";
 import Notification from "../src/components/Notifications";
 import Togglable from "../src/components/Toggle";
-
-// Muista vaihtaa 3003 takaisin localhostille, kun teet vaihdoksen
+import styles from "../src/components/styles.module.css"; // Importtaa tyylit
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -123,13 +122,23 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <header className={styles.header}>
+        <h2 className={styles.centered}>Blogs</h2>
+        {user && (
+          <div className={styles.userInfo}>
+            <span>{user.name} logged in</span>
+            <button className={styles.button} onClick={handleLogout}>
+              logout
+            </button>
+          </div>
+        )}
+      </header>
       <Notification message={notification.message} type={notification.type} />
-      <p>{user.name} logged in</p>
-      <button onClick={handleLogout}>logout</button>
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm createBlog={createBlog} />
-      </Togglable>
+      {user && (
+        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+          <BlogForm createBlog={createBlog} />
+        </Togglable>
+      )}
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

@@ -1,0 +1,30 @@
+/* Testataan CSS moduulia */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.centered {
+  text-align: center;
+  flex: 1;
+}
+
+.userInfo {
+  position: absolute;
+  right: 10px;
+}
+
+.button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
