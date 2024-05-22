@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-// Aletaan kiinnittämään nyt vähän huomiota tyylittelyyn:
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [visible, setVisible] = useState(false);
 
   const blogStyle = {
@@ -31,6 +30,20 @@ const Blog = ({ blog }) => {
     setVisible(!visible);
   };
 
+  const handleLike = async () => {
+    if (!blog || !blog.id) {
+      console.error("Blog data error:", blog);
+      return;
+    }
+
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+      user: blog.user ? blog.user._id : undefined,
+    };
+    updateBlog(blog.id, updatedBlog);
+  };
+
   return (
     <div style={blogStyle}>
       <div style={headerStyle}>
@@ -46,7 +59,9 @@ const Blog = ({ blog }) => {
           <div>{blog.url}</div>
           <div>
             likes {blog.likes}
-            <button style={buttonStyle}>like</button>
+            <button style={buttonStyle} onClick={handleLike}>
+              like
+            </button>
           </div>
           <div>{blog.author ? blog.author : "Author Not Known"}</div>
         </div>

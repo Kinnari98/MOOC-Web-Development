@@ -4,6 +4,42 @@ const { tokenExtractor, userExtractor } = require("../middleware/auth.js");
 
 const blogsRouter = express.Router();
 
+blogsRouter.put(
+  "/:id",
+  tokenExtractor,
+  userExtractor,
+  async (request, response) => {
+    const { id } = request.params;
+    const { title, author, url, likes, user } = request.body;
+
+    if (!request.user) {
+      return response.status(401).json({ error: "token missing or invalid" });
+    }
+
+    const updatedBlog = {
+      title,
+      author,
+      url,
+      likes,
+      user,
+    };
+
+    try {
+      const blog = await Blog.findByIdAndUpdate(id, updatedBlog, {
+        new: true,
+      }).populate("user", "username name");
+      if (blog) {
+        response.json(blog);
+      } else {
+        response.status(404).json({ error: "Blog not found" });
+      }
+    } catch (error) {
+      console.error("Error updating blog:", error);
+      response.status(400).json({ error: "Error updating blog" });
+    }
+  }
+);
+
 blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", "username name"); // Populoi käyttäjätiedot
   response.json(blogs);
