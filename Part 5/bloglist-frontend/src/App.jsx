@@ -1,26 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Login from "../src/components/Login";
 import Blog from "../src/components/Blog";
+import BlogForm from "../src/components/BlogForm";
+import Notification from "../src/components/Notifications";
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [blogs, setBlogs] = useState([]);
+  const [notification, setNotification] = useState({ message: "", type: "" });
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get("http://localhost:3003/api/blogs");
+        setBlogs(response.data);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log("Logging in with:", username, password);
-    setUser({ name: "Kalle Kinnari" }); // Esimerkki käyttäjä
-    setUsername("");
-    setPassword("");
+    try {
+      const response = await axios.post("http://localhost:3003/api/login", {
+        username,
+        password,
+      });
+
+      const userData = response.data;
+      window.localStorage.setItem(
+        "loggedBlogAppUser",
+        JSON.stringify(userData)
+      );
+      setUser(userData);
+      setUsername("");
+      setPassword("");
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${userData.token}`;
+      setNotification({ message: "Successfully logged in", type: "success" });
+      setTimeout(() => {
+        setNotification({ message: "", type: "" });
+      }, 5000);
+    } catch (error) {
+      setNotification({ message: "wrong username/password", type: "error" });
+      setTimeout(() => {
+        setNotification({ message: "", type: "" });
+      }, 5000);
+      console.error("Invalid credentials");
+    }
   };
 
-  console.log("User state:", user);
+  const handleLogout = () => {
+    window.localStorage.removeItem("loggedBlogAppUser");
+    setUser(null);
+    axios.defaults.headers.common["Authorization"] = null;
+    setNotification({ message: "Successfully logged out", type: "success" });
+    setTimeout(() => {
+      setNotification({ message: "", type: "" });
+    }, 5000);
+  };
+
+  const createBlog = async (newBlog) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3003/api/blogs",
+        newBlog
+      );
+      setBlogs(blogs.concat(response.data));
+      setNotification({
+        message: `a new blog ${response.data.title} by ${response.data.author} added`,
+        type: "success",
+      });
+      setTimeout(() => {
+        setNotification({ message: "", type: "" });
+      }, 5000);
+    } catch (error) {
+      setNotification({ message: "Error creating blog", type: "error" });
+      setTimeout(() => {
+        setNotification({ message: "", type: "" });
+      }, 5000);
+      console.error("Error creating blog:", error);
+    }
+  };
 
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={notification.message} type={notification.type} />
         <Login
           handleLogin={handleLogin}
           username={username}
@@ -32,19 +115,13 @@ const App = () => {
     );
   }
 
-  const blogs = [
-    { id: 1, title: "React patterns", author: "Michael Chan" },
-    {
-      id: 2,
-      title: "Go To Statement Considered Harmful",
-      author: "Edsger W. Dijkstra",
-    },
-  ];
-
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={notification.message} type={notification.type} />
       <p>{user.name} logged in</p>
+      <button onClick={handleLogout}>logout</button>
+      <BlogForm createBlog={createBlog} />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

@@ -13,6 +13,7 @@ app.use("/api/blogs", blogsRouter);
 app.use("/api/blogs/id", blogsRouter);
 app.use(userRouter);
 app.use(loginRouter);
+app.use("api/login", loginRouter);
 
 console.log("Hello from app");
 
