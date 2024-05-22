@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Login from "../src/components/Login";
 import Blog from "../src/components/Blog";
 import BlogForm from "../src/components/BlogForm";
 import Notification from "../src/components/Notifications";
+import Togglable from "../src/components/Toggle";
+
+// Muista vaihtaa 3003 takaisin localhostille, kun teet vaihdoksen
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -11,6 +14,8 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [blogs, setBlogs] = useState([]);
   const [notification, setNotification] = useState({ message: "", type: "" });
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -90,6 +95,7 @@ const App = () => {
       setTimeout(() => {
         setNotification({ message: "", type: "" });
       }, 5000);
+      blogFormRef.current.toggleVisibility();
     } catch (error) {
       setNotification({ message: "Error creating blog", type: "error" });
       setTimeout(() => {
@@ -121,7 +127,9 @@ const App = () => {
       <Notification message={notification.message} type={notification.type} />
       <p>{user.name} logged in</p>
       <button onClick={handleLogout}>logout</button>
-      <BlogForm createBlog={createBlog} />
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+        <BlogForm createBlog={createBlog} />
+      </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

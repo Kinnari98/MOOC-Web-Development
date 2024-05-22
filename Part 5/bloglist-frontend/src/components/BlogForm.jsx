@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ createBlog, toggleVisibility }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -16,6 +16,7 @@ const BlogForm = ({ createBlog }) => {
     setTitle("");
     setAuthor("");
     setUrl("");
+    toggleVisibility(); // Piilota lomake blogin luomisen jälkeen
   };
 
   return (
