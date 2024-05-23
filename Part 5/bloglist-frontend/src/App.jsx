@@ -29,7 +29,8 @@ const App = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("http://localhost:3003/api/blogs");
-        setBlogs(response.data);
+        const sortedBlogs = response.data.sort((a, b) => b.likes - a.likes); // Sorttaus
+        setBlogs(sortedBlogs);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -86,7 +87,10 @@ const App = () => {
         "http://localhost:3003/api/blogs",
         newBlog
       );
-      setBlogs([...blogs, response.data]);
+      const newBlogs = [...blogs, response.data].sort(
+        (a, b) => b.likes - a.likes
+      ); // Lisää uusi blogi ja järjstelee uusiks
+      setBlogs(newBlogs);
       setNotification({
         message: `A new blog '${response.data.title}' by ${response.data.author} added`,
         type: "success",
@@ -110,9 +114,9 @@ const App = () => {
         `http://localhost:3003/api/blogs/${id}`,
         blogToUpdate
       );
-      const updatedBlogs = blogs.map((blog) =>
-        blog.id === id ? { ...blog, ...response.data } : blog
-      );
+      const updatedBlogs = blogs
+        .map((blog) => (blog.id === id ? { ...blog, ...response.data } : blog))
+        .sort((a, b) => b.likes - a.likes);
       setBlogs(updatedBlogs);
       setNotification({
         message: "Blog updated successfully",
@@ -146,6 +150,28 @@ const App = () => {
     );
   }
 
+  const deleteBlog = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3003/api/blogs/${id}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setBlogs(blogs.filter((blog) => blog.id !== id));
+      setNotification({
+        message: "Blog deleted successfully",
+        type: "success",
+      });
+      setTimeout(() => {
+        setNotification({ message: "", type: "" });
+      }, 5000);
+    } catch (error) {
+      console.error("Failed to delete blog:", error);
+      setNotification({ message: "Failed to delete blog", type: "error" });
+      setTimeout(() => {
+        setNotification({ message: "", type: "" });
+      }, 5000);
+    }
+  };
+
   return (
     <div>
       <header className={styles.header}>
@@ -166,7 +192,13 @@ const App = () => {
         </Togglable>
       )}
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          updateBlog={updateBlog}
+          deleteBlog={deleteBlog}
+          currentUser={user}
+        />
       ))}
     </div>
   );
