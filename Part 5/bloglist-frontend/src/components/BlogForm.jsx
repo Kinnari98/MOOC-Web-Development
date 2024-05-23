@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./BlogForm.module.css"; // Importtaa tyylitiedosto
+import PropTypes from "prop-types";
 
 const BlogForm = ({ createBlog, toggleVisibility }) => {
   const [title, setTitle] = useState("");
@@ -57,6 +58,12 @@ const BlogForm = ({ createBlog, toggleVisibility }) => {
       </form>
     </div>
   );
+};
+
+// Proppikorjaukset
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+  toggleVisibility: PropTypes.func.isRequired,
 };
 
 export default BlogForm;
