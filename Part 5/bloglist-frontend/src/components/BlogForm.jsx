@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "./BlogForm.module.css"; // Importtaa tyylitiedosto
 import PropTypes from "prop-types";
+import styles from "./BlogForm.module.css";
 
 const BlogForm = ({ createBlog, toggleVisibility }) => {
   const [title, setTitle] = useState("");
@@ -18,7 +18,9 @@ const BlogForm = ({ createBlog, toggleVisibility }) => {
     setTitle("");
     setAuthor("");
     setUrl("");
-    toggleVisibility(); // Piilota lomake blogin luomisen jälkeen
+    if (toggleVisibility) {
+      toggleVisibility(); // Piilota lomake blogin luomisen jälkeen
+    }
   };
 
   return (
@@ -63,10 +65,9 @@ const BlogForm = ({ createBlog, toggleVisibility }) => {
   );
 };
 
-// Proppikorjaukset
 BlogForm.propTypes = {
   createBlog: PropTypes.func.isRequired,
-  toggleVisibility: PropTypes.func.isRequired,
+  toggleVisibility: PropTypes.func,
 };
 
 export default BlogForm;

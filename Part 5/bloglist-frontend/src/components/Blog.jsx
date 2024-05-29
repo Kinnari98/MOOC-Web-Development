@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
   const [visible, setVisible] = useState(false);
+  const [likes, setLikes] = useState(blog.likes || 0);
 
   const blogStyle = {
     padding: 10,
@@ -37,12 +38,20 @@ const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
       return;
     }
 
+    const currentLikes = typeof blog.likes === "number" ? blog.likes : 0;
+
     const updatedBlog = {
       ...blog,
-      likes: blog.likes + 1,
-      user: blog.user ? blog.user._id : undefined,
+      likes: currentLikes + 1,
+      user: blog.user ? blog.user.id : undefined,
     };
-    updateBlog(blog.id, updatedBlog);
+
+    try {
+      await updateBlog(blog.id, updatedBlog);
+      setLikes(currentLikes + 1); // Päivitä tykkäykset tilassa
+    } catch (error) {
+      console.error("Failed to update blog:", error);
+    }
   };
 
   const handleDelete = () => {
@@ -69,7 +78,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
         <div style={detailsStyle}>
           <div>{blog.url}</div>
           <div>
-            likes {blog.likes}
+            likes {likes}
             <button style={buttonStyle} onClick={handleLike}>
               like
             </button>

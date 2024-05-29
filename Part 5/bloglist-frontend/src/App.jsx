@@ -137,7 +137,6 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <h2>Log in to application</h2>
         <Notification message={notification.message} type={notification.type} />
         <Login
           handleLogin={handleLogin}

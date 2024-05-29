@@ -16,7 +16,14 @@ const Notification = ({ message, type }) => {
     marginBottom: "10px",
   };
 
-  return <div style={notificationStyle}>{message}</div>;
+  return (
+    <div
+      style={notificationStyle}
+      className={type === "error" ? "error" : "success"}
+    >
+      {message}
+    </div>
+  );
 };
 
 Notification.propTypes = {
