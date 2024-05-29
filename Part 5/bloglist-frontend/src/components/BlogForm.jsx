@@ -30,6 +30,7 @@ const BlogForm = ({ createBlog, toggleVisibility }) => {
           <input
             type="text"
             value={title}
+            placeholder="Enter title"
             className={styles.formInput}
             onChange={({ target }) => setTitle(target.value)}
           />
@@ -39,6 +40,7 @@ const BlogForm = ({ createBlog, toggleVisibility }) => {
           <input
             type="text"
             value={author}
+            placeholder="Enter author"
             className={styles.formInput}
             onChange={({ target }) => setAuthor(target.value)}
           />
@@ -48,6 +50,7 @@ const BlogForm = ({ createBlog, toggleVisibility }) => {
           <input
             type="text"
             value={url}
+            placeholder="Enter URL"
             className={styles.formInput}
             onChange={({ target }) => setUrl(target.value)}
           />

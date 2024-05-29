@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import Blog from "./Blog";
 
 describe("Blog component", () => {
@@ -52,5 +52,30 @@ describe("Blog component", () => {
     expect(getByText("http://testiurl.com")).toBeInTheDocument();
     expect(getByText("likes 5")).toBeInTheDocument();
     expect(getByText("Test User")).toBeInTheDocument();
+  });
+
+  it("LIKE BUTTON CLICKED TWICE", () => {
+    const mockHandler = vi.fn();
+
+    const { getByText } = render(
+      <Blog
+        blog={blog}
+        updateBlog={mockHandler}
+        deleteBlog={() => {}}
+        currentUser={{ id: "12345", name: "Test User" }}
+      />
+    );
+
+    const viewButton = getByText("view");
+    fireEvent.click(viewButton);
+
+    // Klikkaa "like" -nappia kahdesti
+    const likeButton = getByText("like");
+    fireEvent.click(likeButton);
+    fireEvent.click(likeButton);
+
+    // updateBlog kutsutaan kahdesti
+    // Jaba
+    expect(mockHandler).toHaveBeenCalledTimes(2);
   });
 });
