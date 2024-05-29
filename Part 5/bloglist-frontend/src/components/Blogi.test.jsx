@@ -1,19 +1,23 @@
 import React from "react";
-import { render, within } from "@testing-library/react";
+import { render, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, it, expect } from "vitest";
 import Blog from "./Blog";
 
 describe("Blog component", () => {
-  it("RENDERING BLOG TITLE", () => {
-    const blog = {
-      id: "1",
-      title: "Testi Title",
-      author: "Kalle K",
-      url: "http://testiurl.com",
-      likes: 5,
-    };
+  const blog = {
+    id: "1",
+    title: "Testi Title",
+    author: "Kalle K",
+    url: "http://testiurl.com",
+    likes: 5,
+    user: {
+      id: "12345",
+      name: "Test User",
+    },
+  };
 
+  it("RENDERING BLOG TITLE", () => {
     const { getByRole, queryByText } = render(
       <Blog blog={blog} updateBlog={() => {}} deleteBlog={() => {}} />
     );
@@ -28,5 +32,25 @@ describe("Blog component", () => {
     expect(queryByText("http://testiurl.com")).toBeNull();
 
     expect(queryByText("likes 5")).toBeNull();
+  });
+
+  it("INFO SHOWN AFTER PRESSING VIEW", () => {
+    const { getByText } = render(
+      <Blog
+        blog={blog}
+        updateBlog={() => {}}
+        deleteBlog={() => {}}
+        currentUser={{ id: "12345", name: "Test User" }}
+      />
+    );
+
+    // view
+    const button = getByText("view");
+    fireEvent.click(button);
+
+    // Varmistaa, että url, tykkäykset ja käyttäjä näytetään
+    expect(getByText("http://testiurl.com")).toBeInTheDocument();
+    expect(getByText("likes 5")).toBeInTheDocument();
+    expect(getByText("Test User")).toBeInTheDocument();
   });
 });
